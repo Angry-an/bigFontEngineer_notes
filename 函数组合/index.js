@@ -13,3 +13,9 @@ function first(arr) {
 
 let last = compose(first, reverse);
 console.log(last([1, 2, 4, 5]));
+
+
+/**
+ * 闭包
+ * 
+ */
