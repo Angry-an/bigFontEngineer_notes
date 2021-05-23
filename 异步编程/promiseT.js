@@ -26,61 +26,67 @@ class PromiseS {
     }
   }
   then(onFulfilled, onRejected) {
-    // onFulfilled如果不是函数，就忽略onFulfilled，直接返回value
-    onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (value) => value;
-    // onRejected如果不是函数，就忽略onRejected，直接扔出错误
-    onRejected =
-      typeof onRejected === 'function'
-        ? onRejected
-        : (err) => {
-            throw err;
-          };
-    let promise2 = new Promise((resolve, reject) => {
+    // // onFulfilled如果不是函数，就忽略onFulfilled，直接返回value
+    // onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (value) => value;
+    // // onRejected如果不是函数，就忽略onRejected，直接扔出错误
+    // onRejected =
+    //   typeof onRejected === 'function'
+    //     ? onRejected
+    //     : (err) => {
+    //         throw err;
+    //       };
+    let promise2 = new PromiseS((resolve, reject) => {
       if (this.state === 'fulfilled') {
+        let x = onFulfilled(this.value);
+        resolve(x);
         // 异步
-        setTimeout(() => {
-          try {
-            let x = onFulfilled(this.value);
-            resolvePromise(promise2, x, resolve, reject);
-          } catch (e) {
-            reject(e);
-          }
-        }, 0);
+        // setTimeout(() => {
+        //   try {
+        //     let x = onFulfilled(this.value);
+        //     resolvePromise(promise2, x, resolve, reject);
+        //   } catch (e) {
+        //     reject(e);
+        //   }
+        // }, 0);
       }
       if (this.state === 'rejected') {
+        let x = onRejected(this.reason);
+        reject(x);
         // 异步
-        setTimeout(() => {
-          // 如果报错
-          try {
-            let x = onRejected(this.reason);
-            resolvePromise(promise2, x, resolve, reject);
-          } catch (e) {
-            reject(e);
-          }
-        }, 0);
+        // setTimeout(() => {
+        //   // 如果报错
+        //   try {
+        //     let x = onRejected(this.reason);
+        //     resolvePromise(promise2, x, resolve, reject);
+        //   } catch (e) {
+        //     reject(e);
+        //   }
+        // }, 0);
       }
       if (this.state === 'pending') {
         this.onResolvedCallbacks.push(() => {
+          let x = onFulfilled(this.value);
+          resolvePromise(promise2, x, resolve, reject);
           // 异步
-          setTimeout(() => {
-            try {
-              let x = onFulfilled(this.value);
-              resolvePromise(promise2, x, resolve, reject);
-            } catch (e) {
-              reject(e);
-            }
-          }, 0);
+          // setTimeout(() => {
+          //   try {
+          //     let x = onFulfilled(this.value);
+          //     resolvePromise(promise2, x, resolve, reject);
+          //   } catch (e) {
+          //     reject(e);
+          //   }
+          // }, 0);
         });
         this.onRejectedCallbacks.push(() => {
           // 异步
-          setTimeout(() => {
-            try {
-              let x = onRejected(this.reason);
-              resolvePromise(promise2, x, resolve, reject);
-            } catch (e) {
-              reject(e);
-            }
-          }, 0);
+          // setTimeout(() => {
+          //   try {
+          //     let x = onRejected(this.reason);
+          //     resolvePromise(promise2, x, resolve, reject);
+          //   } catch (e) {
+          //     reject(e);
+          //   }
+          // }, 0);
         });
       }
     });
@@ -130,7 +136,7 @@ function resolvePromise(promise2, x, resolve, reject) {
       // 取then出错了那就不要在继续执行了
       reject(e);
     }
-  } else {
+     } else {
     resolve(x);
   }
 }
