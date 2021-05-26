@@ -25,6 +25,27 @@ class PromiseS {
       reject(err);
     }
   }
+  static all (list) {
+  return new PromiseS((resolve, reject) => {
+    /**
+     * 返回值的集合
+     */
+    let values = []
+    let count = 0
+    for (let [i, p] of list.entries()) {
+      // 数组参数如果不是MyPromise实例，先调用MyPromise.resolve
+      this.resolve(p).then(res => {
+        values[i] = res
+        count++
+        // 所有状态都变成fulfilled时返回的MyPromise状态就变成fulfilled
+        if (count === list.length) resolve(values)
+      }, err => {
+        // 有一个被rejected时返回的MyPromise状态就变成rejected
+        reject(err)
+      })
+    }
+  })
+}
   then(onFulfilled, onRejected) {
     // // onFulfilled如果不是函数，就忽略onFulfilled，直接返回value
     // onFulfilled = typeof onFulfilled === 'function' ? onFulfilled : (value) => value;
@@ -37,56 +58,50 @@ class PromiseS {
     //       };
     let promise2 = new PromiseS((resolve, reject) => {
       if (this.state === 'fulfilled') {
-        let x = onFulfilled(this.value);
-        resolve(x);
         // 异步
-        // setTimeout(() => {
-        //   try {
-        //     let x = onFulfilled(this.value);
-        //     resolvePromise(promise2, x, resolve, reject);
-        //   } catch (e) {
-        //     reject(e);
-        //   }
-        // }, 0);
+        setTimeout(() => {
+          try {
+            let x = onFulfilled(this.value);
+            resolvePromise(promise2, x, resolve, reject);
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
       }
       if (this.state === 'rejected') {
-        let x = onRejected(this.reason);
-        reject(x);
         // 异步
-        // setTimeout(() => {
-        //   // 如果报错
-        //   try {
-        //     let x = onRejected(this.reason);
-        //     resolvePromise(promise2, x, resolve, reject);
-        //   } catch (e) {
-        //     reject(e);
-        //   }
-        // }, 0);
+        setTimeout(() => {
+          // 如果报错
+          try {
+            let x = onRejected(this.reason);
+            resolvePromise(promise2, x, resolve, reject);
+          } catch (e) {
+            reject(e);
+          }
+        }, 0);
       }
       if (this.state === 'pending') {
         this.onResolvedCallbacks.push(() => {
-          let x = onFulfilled(this.value);
-          resolvePromise(promise2, x, resolve, reject);
           // 异步
-          // setTimeout(() => {
-          //   try {
-          //     let x = onFulfilled(this.value);
-          //     resolvePromise(promise2, x, resolve, reject);
-          //   } catch (e) {
-          //     reject(e);
-          //   }
-          // }, 0);
+          setTimeout(() => {
+            try {
+              let x = onFulfilled(this.value);
+              resolvePromise(promise2, x, resolve, reject);
+            } catch (e) {
+              reject(e);
+            }
+          }, 0);
         });
         this.onRejectedCallbacks.push(() => {
           // 异步
-          // setTimeout(() => {
-          //   try {
-          //     let x = onRejected(this.reason);
-          //     resolvePromise(promise2, x, resolve, reject);
-          //   } catch (e) {
-          //     reject(e);
-          //   }
-          // }, 0);
+          setTimeout(() => {
+            try {
+              let x = onRejected(this.reason);
+              resolvePromise(promise2, x, resolve, reject);
+            } catch (e) {
+              reject(e);
+            }
+          }, 0);
         });
       }
     });
@@ -139,4 +154,26 @@ function resolvePromise(promise2, x, resolve, reject) {
      } else {
     resolve(x);
   }
+}
+
+static all (list) {
+  return new MyPromise((resolve, reject) => {
+    /**
+     * 返回值的集合
+     */
+    let values = []
+    let count = 0
+    for (let [i, p] of list.entries()) {
+      // 数组参数如果不是MyPromise实例，先调用MyPromise.resolve
+      this.resolve(p).then(res => {
+        values[i] = res
+        count++
+        // 所有状态都变成fulfilled时返回的MyPromise状态就变成fulfilled
+        if (count === list.length) resolve(values)
+      }, err => {
+        // 有一个被rejected时返回的MyPromise状态就变成rejected
+        reject(err)
+      })
+    }
+  })
 }
