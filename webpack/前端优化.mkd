@@ -1,0 +1,28 @@
+## 前端优化
+
+### 影响请求响应的几个主要因素
+  1. 资源体积大小
+  2. 网络并发请求数量
+  3. 数据读取（磁盘，缓存）
+  4. 网络本身（带宽，网速）
+  5. 服务器性能
+
+### 策略
+
+#### 打包过程
+  1. 使用dll提前打包vue，vuex，router，axios等。这些基础包基本上版本不会频繁变动
+  2. 利用node多线程并发
+
+#### 打包结果
+  1. 减少打包体积：css，js，image压缩
+  2. 减少并发请求：合并打包文件
+  3. 优化加载渲染过程：preload，prefetch
+
+### 实践
+  1. happypack：多进程构建
+  2. image-webapck-loader: 压缩图片，减少图片大小
+  3. webpack-spritesmith：生成雪碧图
+  4. LimitChunkCountPlugin：合并晓得chunk，减少http请求开销
+  5. SplitChunksPlugin：公共模块抽取
+  6. url-loader/file-loader:在文件大小低于指定的限制时，可以返回一个 DataURL（减少http请求）
+  7. DLLReferencePlugin 了拆分 bundles，将业务代码和地第三方库代码分开。大大提升了构建的速度。
