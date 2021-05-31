@@ -58,38 +58,71 @@
  * 2. 不会改变你this指向，指向当前作用域下的
  */
 
-const person = {
-  name: '钱晓安',
-  sayName: () => {
-    console.log(this.name); //undefined
-  },
-  sayName1: function () {
-    console.log(this.name); // 钱晓安
-  },
+// const person = {
+//   name: '钱晓安',
+//   sayName: () => {
+//     console.log(this.name); //undefined
+//   },
+//   sayName1: function () {
+//     console.log(this.name); // 钱晓安
+//   },
 
-  sayAsync2: () => {
-    setTimeout(() => {
-      console.log(this.name); // undefined
-    }, 1000);
-  },
-  sayAsync3: () => {
-    setTimeout(function() {
-      console.log(this.name); // undefined
-    }, 1000);
-  },
-  sayAsync: function () {
-    // let _this = this
-    setTimeout(function () {
-      console.log(this.name); // undefined
-    }, 1000);
-  },
-  sayAsync1: function () {
-    setTimeout(() => {
-      console.log(this.name); // 钱晓安
-    }, 1000);
-  },
-};
-// person.sayName();
-// person.sayName1();
-// person.sayAsync2()
-person.sayAsync3();
+//   sayAsync2: () => {
+//     setTimeout(() => {
+//       console.log(this.name); // undefined
+//     }, 1000);
+//   },
+//   sayAsync3: () => {
+//     setTimeout(function() {
+//       console.log(this.name); // undefined
+//     }, 1000);
+//   },
+//   sayAsync: function () {
+//     // let _this = this
+//     setTimeout(function () {
+//       console.log(this.name); // undefined
+//     }, 1000);
+//   },
+//   sayAsync1: function () {
+//     setTimeout(() => {
+//       console.log(this.name); // 钱晓安
+//     }, 1000);
+//   },
+// };
+// person.sayAsync3();
+
+/**Object.assign
+ * 
+ */
+// let obj = { a: 1 }
+// let obj1 = {}
+// Object.assign(obj1,obj)
+
+
+/**proxy
+ * 监视摸个对象的读写
+ */
+
+// let obj = {
+//   name: "qxa",
+//   age:18
+// }
+// const proxyObj = new Proxy(obj, {
+//   get(taret, propetry) {},
+//   set(taret, propetry,value) {},
+// });
+
+
+/**Map
+ * 对象的key只能是字符串，就算传入数组和对象也会经过tostring转你换为字符串
+ * Map就是来解决这个问题的
+ */
+// var a = new Map()
+// var tom = { a: 1 }
+// a.set(tom,1);
+
+/**for of
+ * 遍历所有数据结构的同一方式
+ * 1. break 种植循环（foreach不行）；其他可以终止遍历的是some，every
+ * 2. 伪数组uekeyi遍历arguments
+ */

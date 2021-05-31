@@ -1,0 +1,11 @@
+## hooks出现为了解决的痛点
+   组件的状态逻辑复用
+## 哪些hooks
+ 1. usestate
+ 2. useeffect(渲染后的副作用)：
+    1. 在组件初始化，更新的时候调用；
+    2. 在返回一个函数的时候表示清除内容
+    3. 每次更新都会执行很烦，我需要在挂在和卸载的时候执行一次就可以了。第二个参数传入[]表面不依赖props或者state，只执行一次。添加哪个状态就会根据这个状态的变化而执行
+    4. 避免componentDidUpdate和componentWillUnmount的重复。根据effect功能分割他们
+## 自定义hooks
+## userefs
