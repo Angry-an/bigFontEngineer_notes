@@ -11,7 +11,8 @@
 
 #### 打包过程
   1. 使用dll提前打包vue，vuex，router，axios等。这些基础包基本上版本不会频繁变动
-  2. 利用node多线程并发
+  2. 利用node多线程并发，happypack
+  3. loader缓存、exclude排除，缩小搜索匹配范围
 
 #### 打包结果
   1. 减少打包体积：css，js，image压缩
