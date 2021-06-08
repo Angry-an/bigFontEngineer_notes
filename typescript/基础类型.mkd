@@ -1,0 +1,9 @@
+### ts基础类型
+   1. any
+   2. number
+   3. string
+   4. boolean
+   5. 数组： let arr:number[]   let arr:Array<string> 利用数组泛型
+   6. 元组：let x = [string,number]   x=['123',123]
+   7. enum（枚举）： enum Color{ red,white,blue}   let c :Color = Color.red
+   8. void

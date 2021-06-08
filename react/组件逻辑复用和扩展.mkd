@@ -1,0 +1,31 @@
+### 如何复用和扩展 React 组件的状态逻辑？具体而言，有以下五种方案：
+1. Mixins
+2. Class Inheritance
+3. Higher-Order Component
+4. Render Props
+5. React Hooks
+
+一、 mixins:混合，就是将一个对象的属性拷贝到另一个对象上去。他的出现为了解决代码复用的问题。
+   扩展：说到对象融合，Object.assign 也是常用的方法，它跟 Mixins 有一个重大的区别在于 Mixins 会把原型链上的属性一并复制过去（因为for...in），而 Object.assign 则不会。由于现在 React 已经不再支持 Mixin 了
+
+   缺点： a. mixins引入了隐藏依赖关系。相互依赖，相互耦合，不利于维护
+        b. 名称相同的mimins不能同时使用。比如 FluxListenerMixin 定义 handleChange() 和 WindowSizeMixin 定义handleChange()，则不能同时使用它们，甚至我们也无法在自己的组件上定义具有此名称的方法
+
+        
+二、class 说到类组件的代码逻辑复用，熟悉 OOP 的同学肯定第一时间想到了类的继承，A 组件只要继承 B 组件就可以复用父类中的方法。而 React 希望一个组件只专注于一件事。如果重写子组件的生命周期，那父组件的生命周期会被覆盖，这也是我们在开发中不愿意看到的
+
+三、高阶组件HOC：函数可以作为参数被传递，函数可以作为返回值输出
+  a. 高阶组件是一个函数，并不是一个组件。可见 HOC 其实就是一个装饰器
+  缺点：
+  1. 组件层级嵌套过多（Debug 过 Redux 的必然深有体会），这让调试变得非常困难。
+  2. 对 Typescript 类型化不够友好
+  3. 透传了不相关的 props：HOC 可以劫持 props，在不遵守约定的情况下可以覆盖掉透传的 props。另外，这也导致中间组件也接受了不相关的 props，代码可读性变差
+  4. 静态属性需要手动拷贝：当我们应用 HOC 去增强另一个组件时，我们实际使用的组件已经不是原组件了，所以我们拿不到原组件的任何静态属性，我们可以在 HOC 的结尾手动拷贝它们。
+
+四、render props：Render Props 其实很常见，比如 React Context API
+缺点：这会产生和 HOC 一样的 Wrapper Hell 问题。
+
+五、 hooks
+1. 避免命名冲突：hook和mixins有一定相似，但是mixins引入逻辑和状态可以被互相覆盖。而多个hooks之间相互不影响
+2. 避免Wrapper Hell多层嵌套
+3. 拥有函数组件所有优点。同时若使用useState、useEffect、useRef 等 Hook 可以在 Functional Component 中使用 State、生命周期和 ref，规避了 Functional Component 固有的缺点。

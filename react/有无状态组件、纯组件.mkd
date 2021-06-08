@@ -1,0 +1,13 @@
+ ### react 组件可分为函数组件，类组件
+1. 函数式组件我们也称其为无状态组件（Stateless Component），因为在函数组件中，我们无法使用state；甚至它也没法使用组件的生命周期方法。一个函数组件只负责接收props，渲染 DOM，而不去关注其他逻辑。缺点，没有shouldComponentUpdate这个生命周期，不能优化
+
+2. 纯组件：如果 React 组件为相同的 state 和 props 呈现相同的输出，则可以将其视为纯组件。React 提供了 PureComponent 基类。基于React.PureComponent 类实现的的类组件被视为纯组件。Pure Component 可以减少不必要的更新，进而提升性能
+
+3. 状态的函数组件多么好用，现在 Pure Component 也有性能上减少重复渲染的优点，那它们可以结合使用。在 React 16.6 中提供了一个 memo 函数，它可以让我们的函数组件也具备渲染控制的能力。
+   ```
+   import React, { memo } from 'react';
+
+    const ToTheMoonComponent = React.memo(function MyComponent(props) {
+        // only renders if props have changed
+    });
+   js```

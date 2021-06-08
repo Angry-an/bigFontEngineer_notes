@@ -1,0 +1,36 @@
+### import 和require都是被模块化所使用
+
+#### 一、遵循规范
+1. require 是AMD规范引入方式
+2. import 是es6一个语法标准，若要兼容浏览器需转化成es5语法
+   
+#### 二、调用时间
+1. require是在运行是调用，所以理论上可以运用在代码的任何地方
+2. import是在编译时调用，必须在文件开头
+
+### 三、本质
+1. require本质是一个赋值过程。用require的结果是object，number，string等，然后再把这些结果赋值某个变量
+2. import是一个解构过程。目前没有引擎实现import，我们在node中使用babel支持es6，也仅仅是将其转成es5，import会转成require
+
+### 优缺点
+1. require / exports: 遵循 CommonJS/AMD，只能在运行时确定模块的依赖关系及输入/输出的变量，无法进行静态优化。
+   <>
+      const fs = require('fs')
+      exports.fs = fs
+      module.exports = fs
+    <>
+2. import / export： 遵循 ES6 规范，支持编译时静态分析，便于JS引入宏和类型检验。动态绑定。
+    <>
+      import fs from 'fs'
+      import {default as fs} from 'fs'
+      import * as fs from 'fs'
+      import {readFile} from 'fs'
+      import {readFile as read} from 'fs'
+      import fs, {readFile} from 'fs'
+
+      export default fs
+      export const fs
+      export function readFile
+      export {readFile, read}
+      export * from 'fs'
+    <>
